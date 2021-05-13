@@ -1,6 +1,6 @@
 var cachebust = require('gulp-cache-bust');
  
-gulp.src('./dist/*/*.html')
+gulp.src('./dist/deployment-angular/*.style')
     .pipe(cachebust({
         type: 'timestamp'
     }))
