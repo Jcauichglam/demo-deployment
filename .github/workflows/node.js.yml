@@ -25,7 +25,7 @@ jobs:
     - name: Build Project
       run: |
         npm install
-        npm run build --output-hashing=all
+        npm run build
       
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
