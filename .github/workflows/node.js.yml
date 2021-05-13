@@ -31,4 +31,4 @@ jobs:
         FTP_PASSWORD: Job3811!
         LOCAL_DIR: dist/deployment-angular/
         dangerous-clean-slate: true,
-        server-dir: public_html/
+        server-dir: operadoracocay.com/
