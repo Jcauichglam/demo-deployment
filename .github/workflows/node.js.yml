@@ -27,7 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-    
+    - path: dist/*
+  
   web-deploy:
     name: 🎉 Deploy
     runs-on: windows-latest
@@ -44,3 +45,4 @@ jobs:
         protocol: ftp
         port: 21 # todo replace with your web hosts ftps port
         server-dir: public_html/www/
+        local-dir: dist/
