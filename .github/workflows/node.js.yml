@@ -15,10 +15,17 @@ jobs:
       with:
         node-version: '12.x'
         
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+          
     - name: Build Project
       run: |
         npm install
-        npm run build 
+        npm run build --output-hashing=all
       
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
