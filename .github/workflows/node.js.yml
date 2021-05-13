@@ -1,47 +1,33 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+on: push
+name: Build and Publish Front End Framework Website
 jobs:
-  build:
-
-    runs-on: windows-latest
-
-    strategy:
-      matrix:
-        node-version: [15.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+    - uses: actions/checkout@master
+    
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build
-  
-  web-deploy:
-    name: 🎉 Deploy
-    runs-on: windows-latest
-    steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2.3.2
-
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ftp.devoperadoracocay.com
-        username: jimmi@devoperadoracocay.com	
-        password: Job3811!
-        protocol: ftp
-        port: 21 # todo replace with your web hosts ftps port
-        server-dir: public_html/www/
-        local-dir: dist/*
+        node-version: '12.x'
+        
+    - name: Build Project
+      run: |
+        npm install
+        npm run build --if-present
+        
+    - name: List output files
+      run: ls
+      
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ftp.devoperadoracocay.com
+        FTP_USERNAME: jimmi@devoperadoracocay.com
+        FTP_PASSWORD: Job3811!
+        LOCAL_DIR: build
+        ARGS: --delete
